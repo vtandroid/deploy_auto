@@ -47,32 +47,37 @@ class Process
         }
         $dom->load($webContent);
         $results=$dom->find("div#ires div.g");
-        $mainContent=null;
+          $mainContent=null;
         $titleDom=null;
-        $linkDom=null;
+        $citeDom=null;
         $desDom=null;
         $titleText=null;
         $linkText=null;
+		$citeText=null;
         $desText=null;
         $objSearch=null;
+		$tmpData=null;
         $arrSearchs= array();
         foreach ($results as $result){
             $mainContent=$result->find("div.s");
             if(count($mainContent)>0){
                 $titleDom=$result->find("h3.r a");
-                $linkDom=$mainContent[0]->find("cite");
+                $citeDom=$mainContent[0]->find("cite");
                 $desDom=$mainContent[0]->find("span.st");
-                if(count($titleDom)>0 && count($linkDom)>0 &&count($desDom)>0){
+                if(count($titleDom)>0 && count($citeDom)>0 &&count($desDom)>0){
                     $titleText=$titleDom[0]->innerHtml();
-                    $linkText=$linkDom[0]->innerHtml();
+					$linkText=$titleDom[0]->getAttribute('href');
+					parse_str($linkText,$tmpData);
+					$linkText=$tmpData['/url?q'];
+                    $citeText=$citeDom[0]->innerHtml();
                     $desText=$desDom[0]->innerHtml();
-                    $objSearch=array('title'=>$titleText,'link'=>$linkText,'description'=>$desText);
+                    $objSearch=array('title'=>$titleText,'link'=>$linkText,'cite'=>$citeText,'description'=>$desText);
                     $arrSearchs[]=$objSearch;
                 }
             }
         }
         //echo "<pre>";
         //header('Content-Type: application/json');
-        echo json_encode(array('items'=> array_values($arrSearchs)), JSON_FORCE_OBJECT);
+    echo json_encode(array('items'=> array_values($arrSearchs)));
     }
 }
