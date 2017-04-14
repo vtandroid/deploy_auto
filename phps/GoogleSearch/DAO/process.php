@@ -73,6 +73,6 @@ class Process
         }
         //echo "<pre>";
         //header('Content-Type: application/json');
-        echo json_encode(array('items'=> $arrSearchs), JSON_FORCE_OBJECT);
+        echo json_encode(array('items'=> array_values($arrSearchs)), JSON_FORCE_OBJECT);
     }
 }
