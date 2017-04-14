@@ -19,7 +19,8 @@ class Process
     }
     public static function search($query,$tld='',$tbm=''){
         $domain=Process::getDomainTLD($tld);
-        $q=urlencode($query);
+		$q=mb_substr($query, 0, 100, UTF8_CODE);
+		$q=urlencode($q);
         $now=time();
         $additionVal1=rand(0,100);
         $additionVal2=rand(0,1000);
