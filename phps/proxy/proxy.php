@@ -1,20 +1,31 @@
 <?php
 if (isset($_POST['url']) ) {
 	$url = $_POST['url'];
- $ch = curl_init($url);
- $headers = [
-    'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Encoding: gzip, deflate',
-    'Accept-Language: en-US,en;q=0.5',
-    'Cache-Control: no-cache',
-    'Content-Type: application/x-www-form-urlencoded; charset=utf-8'
-];
- curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
- curl_setopt($ch, CURLOPT_HEADER,$headers);
- curl_setopt($ch, CURLOPT_USERAGENT,"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
- 
- $data = curl_exec($ch);
- curl_close($ch);
- echo $data;
+    $url=trim($url);
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache"
+  ),
+  CURLOPT_USERAGENT=>"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
 }
 ?>
