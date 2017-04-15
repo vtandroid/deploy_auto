@@ -72,6 +72,9 @@ class Process
 					$linkText=$tmpData['/url?q'];
                     $citeText=$citeDom[0]->innerHtml();
                     $desText=$desDom[0]->innerHtml();
+					$titleText=htmlentities($titleText, ENT_QUOTES);
+					$desText=htmlentities($desText, ENT_QUOTES);
+					$citeText=htmlentities($citeText, ENT_QUOTES);
                     $objSearch=array('title'=>$titleText,'link'=>$linkText,'cite'=>$citeText,'description'=>$desText);
                     $arrSearchs[]=$objSearch;
                 }
